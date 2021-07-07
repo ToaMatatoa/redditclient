@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Reddit Client</string>
+    <string name="reddit_client">Reddit Client</string>
+    <string name="favorite_posts">Favorite Posts</string>
 </resources>

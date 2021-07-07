@@ -1,2 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <dimen name="zero_width">0dp</dimen>
+    <dimen name="zero_height">0dp</dimen>
+    <dimen name="width_24">24dp</dimen>
+    <dimen name="height_24">24dp</dimen>
+    <dimen name="width_36">36dp</dimen>
+    <dimen name="height_36">36dp</dimen>
+    <dimen name="width_140">140dp</dimen>
+    <dimen name="height_190">190dp</dimen>
+
+    <dimen name="padding_4">4dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_32">32dp</dimen>
+    <dimen name="padding_36">36dp</dimen>
+    <dimen name="padding_40">40dp</dimen>
+    <dimen name="padding_60">60dp</dimen>
+
+    <dimen name="margin_size_4">4dp</dimen>
+    <dimen name="margin_size_8">8dp</dimen>
+    <dimen name="margin_size_12">12dp</dimen>
+    <dimen name="margin_size_15">15dp</dimen>
+    <dimen name="margin_size_16">16dp</dimen>
+    <dimen name="margin_size_17">17dp</dimen>
+    <dimen name="margin_size_20">20dp</dimen>
+    <dimen name="margin_size_24">24dp</dimen>
+    <dimen name="margin_size_32">32dp</dimen>
+    <dimen name="margin_size_48">48dp</dimen>
+    <dimen name="margin_size_64">64dp</dimen>
+    <dimen name="margin_size_164">164dp</dimen>
+
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+
+    <dimen name="elevation_4">4dp</dimen>
+</resources>
