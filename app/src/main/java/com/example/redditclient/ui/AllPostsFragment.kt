@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.redditclient.R
-import com.example.redditclient.databinding.FragmentRedditBinding
+import com.example.redditclient.databinding.FragmentAllBinding
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.KodeinTrigger
 import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.kcontext
 
-class Fragment : Fragment(R.layout.fragment_reddit), KodeinAware {
+class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
 
     override val kodeinContext = kcontext<Fragment>(this)
     private val parentKodein: Kodein by closestKodein()
@@ -22,7 +22,7 @@ class Fragment : Fragment(R.layout.fragment_reddit), KodeinAware {
     }
     override val kodeinTrigger = KodeinTrigger()
 
-    private var _binding: FragmentRedditBinding? = null
+    private var _binding: FragmentAllBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -32,7 +32,7 @@ class Fragment : Fragment(R.layout.fragment_reddit), KodeinAware {
     ): View {
         kodeinTrigger.trigger()
 
-        _binding = FragmentRedditBinding.inflate(inflater, container, false)
+        _binding = FragmentAllBinding.inflate(inflater, container, false)
         return binding.root
     }
 
