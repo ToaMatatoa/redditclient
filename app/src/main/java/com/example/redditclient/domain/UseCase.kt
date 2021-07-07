@@ -1,4 +1,4 @@
 package com.example.redditclient.domain
 
-class UseCase {
+class UseCase (private val repository: Repository) {
 }

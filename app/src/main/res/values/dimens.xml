@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="zero_width">0dp</dimen>
+    <dimen name="height_16">16dp</dimen>
     <dimen name="zero_height">0dp</dimen>
+    <dimen name="width_16">16dp</dimen>
     <dimen name="width_24">24dp</dimen>
     <dimen name="height_24">24dp</dimen>
     <dimen name="width_36">36dp</dimen>
@@ -31,6 +33,9 @@
     <dimen name="margin_size_64">64dp</dimen>
     <dimen name="margin_size_164">164dp</dimen>
 
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_24">24sp</dimen>
