@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.redditclient.R
 import com.example.redditclient.databinding.FragmentFavouriteBinding
 import org.kodein.di.Kodein
@@ -40,13 +39,22 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite), KodeinAwar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.ivGoBackToAll.setOnClickListener {
-            findNavController().navigate(R.id.action_favouritePostsFragment_to_allPostsFragment, null)
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val ARG_POSITION = "position"
+
+        fun getInstance(position: Int): Fragment {
+            val favouritePostsFragment = FavouritePostsFragment()
+            val bundle = Bundle()
+            bundle.putInt(ARG_POSITION, position)
+            favouritePostsFragment.arguments = bundle
+            return favouritePostsFragment
+        }
     }
 }

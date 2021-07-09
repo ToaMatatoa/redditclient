@@ -1,11 +1,10 @@
 package com.example.redditclient
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import com.example.redditclient.databinding.ActivityMainBinding
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.KodeinTrigger
@@ -14,8 +13,6 @@ import org.kodein.di.android.retainedKodein
 
 class MainActivity : AppCompatActivity(), KodeinAware {
 
-    private lateinit var navController: NavController
-
     private val parentKodein: Kodein by closestKodein()
     override val kodein: Kodein by retainedKodein {
         extend(parentKodein)
@@ -23,6 +20,8 @@ class MainActivity : AppCompatActivity(), KodeinAware {
     override val kodeinTrigger = KodeinTrigger()
 
     private lateinit var binding: ActivityMainBinding
+
+    private val tabItems = listOf("All", "Favorite")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +32,29 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         val view = binding.root
         setContentView(view)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.findNavController()
-    }
+        val viewPagerAdapter = ViewPagerAdapter(this)
+        binding.pager.adapter = viewPagerAdapter
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
+            tab.text = tabItems[position].substringBefore(" ")
+        }.attach()
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> viewPagerAdapter.createFragment(0)
+                    1 -> viewPagerAdapter.createFragment(1)
+                    else -> viewPagerAdapter.createFragment(0)
+                }
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+                //ToDo
+            }
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+                //ToDO
+            }
+        })
     }
 }

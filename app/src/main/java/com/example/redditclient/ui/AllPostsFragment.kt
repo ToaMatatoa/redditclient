@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditclient.R
 import com.example.redditclient.databinding.FragmentAllBinding
-import com.example.redditclient.domain.UseCase
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.KodeinTrigger
@@ -55,10 +53,6 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
 
         viewModel.loadTopEntries()
 
-        binding.ivGoToFavorite.setOnClickListener {
-            findNavController().navigate(R.id.action_allPostsFragment_to_favouritePostsFragment, null)
-        }
-
         binding.rvAllPostsList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = allPostsAdapter
@@ -68,5 +62,17 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        const val ARG_POSITION = "position"
+
+        fun getInstance(position: Int): Fragment {
+            val allPostsFragment = AllPostsFragment()
+            val bundle = Bundle()
+            bundle.putInt(ARG_POSITION, position)
+            allPostsFragment.arguments = bundle
+            return allPostsFragment
+        }
     }
 }
