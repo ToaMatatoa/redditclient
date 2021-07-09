@@ -9,7 +9,7 @@ data class ResponseData(
 ) {
 
     data class MainData(
-        @SerializedName("children") var children: Children
+        @SerializedName("children") var children: List<Children>
     ) {
 
         data class Children(
@@ -17,6 +17,7 @@ data class ResponseData(
         ) {
 
             data class Data(
+                val numOfEntry: Int,
                 @SerializedName("subreddit") var subreddit: String,
                 @SerializedName("author") var author: String,
                 @SerializedName("num_comments") var numComments: Int,

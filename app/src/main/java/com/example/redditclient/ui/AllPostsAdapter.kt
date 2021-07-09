@@ -5,14 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.redditclient.R
-import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
+import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 import com.example.redditclient.databinding.RvAllItemBinding
 
-class AllPostsAdapter : RecyclerView.Adapter<AllPostsAdapter.ViewHolder>() {
+class AllPostsAdapter(private var listener: OnItemClickListener) : RecyclerView.Adapter<AllPostsAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<Children>()
+    private val items = mutableListOf<Data>()
 
-    fun addPosts(booksItems: List<Children>) {
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun addPosts(booksItems: List<Data>) {
         items.clear()
         items.addAll(booksItems)
         notifyDataSetChanged()
@@ -25,8 +29,8 @@ class AllPostsAdapter : RecyclerView.Adapter<AllPostsAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val postPosition: Children = items[position]
-        holder.bind(postPosition)
+        val postPosition: Data = items[position]
+        holder.bind(postPosition, listener)
     }
 
     override fun getItemCount(): Int = items.size
@@ -34,15 +38,23 @@ class AllPostsAdapter : RecyclerView.Adapter<AllPostsAdapter.ViewHolder>() {
     class ViewHolder(private var itemBinding: RvAllItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(item: Children) =
+        fun bind(item: Data, listener: OnItemClickListener?) =
             with(itemView) {
                 Glide.with(this)
-                    .load(item.data.thumbnail)
+                    .load(item.thumbnail)
                     .placeholder(R.drawable.img_placeholder)
                     .dontAnimate()
                     .into(itemBinding.ivPostImage)
 
-                itemBinding.tvPostTitle.text = item.data.title ?: ""
+                itemBinding.tvPostTitle.text = item.title
+                itemBinding.tvPostRating.text = item.numLikes.toString()
+                itemBinding.tvCountOfPostComments.text = item.numComments.toString()
+                itemBinding.numberOfPost.text = item.numOfEntry.toString()
+                itemBinding.postInfo.text = item.info
+
+                if (listener != null) {
+                    itemBinding.root.setOnClickListener { listener.onItemClick(layoutPosition) }
+                }
             }
     }
 }

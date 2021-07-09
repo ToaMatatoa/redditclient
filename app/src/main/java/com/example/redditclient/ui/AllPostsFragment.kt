@@ -1,6 +1,7 @@
 package com.example.redditclient.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditclient.Constants.ARG_POSITION
 import com.example.redditclient.R
+import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.databinding.FragmentAllBinding
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -17,7 +19,7 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.kcontext
 
-class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
+class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItemClickListener,KodeinAware {
 
     override val kodeinContext = kcontext<Fragment>(this)
     private val parentKodein: Kodein by closestKodein()
@@ -31,6 +33,10 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
 
     private val viewModel: ViewModel by instance()
     private var allPostsAdapter: AllPostsAdapter? = null
+
+    override fun onItemClick(position: Int) {
+        context?.let { viewModel.openEntryInChromeTab(position, it) }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,9 +52,9 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        allPostsAdapter = AllPostsAdapter()
+        allPostsAdapter = AllPostsAdapter(this)
 
-        viewModel.liveDataRemoteProvider.observe(viewLifecycleOwner, Observer { posts ->
+        viewModel.liveDataRemoteProvider.observe(viewLifecycleOwner, { posts ->
             allPostsAdapter?.addPosts(posts)
         })
 
@@ -62,6 +68,13 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
         binding.srlAllPosts.setColorSchemeResources(
             R.color.middle_gray
         )
+
+        binding.srlAllPosts.setOnRefreshListener {
+            viewModel.loadTopEntries()
+            Handler().postDelayed(Runnable {
+                binding.srlAllPosts.isRefreshing = false
+            }, 2000)
+        }
     }
 
     override fun onDestroyView() {

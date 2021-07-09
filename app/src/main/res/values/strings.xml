@@ -3,4 +3,5 @@
     <string name="reddit_client">Reddit Client</string>
     <string name="favorite_posts">Favorite Posts</string>
     <string name="all_posts">All Posts</string>
+    <string name="lattice">#</string>
 </resources>
