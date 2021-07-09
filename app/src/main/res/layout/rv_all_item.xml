@@ -37,81 +37,81 @@
             app:layout_constraintTop_toBottomOf="@id/number_of_post" />
 
         <TextView
-            android:id="@+id/post_info"
-            android:layout_width="@dimen/zero_width"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_size_4"
-            android:textSize="@dimen/text_size_12"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/number_of_post"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Posted by u/Dmitriy_Stupak 10 hours ago" />
-
-        <TextView
             android:id="@+id/tv_post_title"
             android:layout_width="@dimen/zero_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_size_4"
-            android:layout_marginTop="@dimen/margin_size_4"
+            android:layout_marginBottom="@dimen/margin_size_20"
             android:textColor="@color/hard_gray"
             android:textSize="@dimen/text_size_16"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/iv_post_image"
-            app:layout_constraintTop_toBottomOf="@+id/post_info"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="Aujourd’hui, on est samedi, nous rendons visite à notre grand-mère. Elle a 84 ans et elle habite à Antibes. J’adore ma grand-mère, elle très gentille. Elle fait des bons gâteaux." />
+
+        <TextView
+            android:id="@+id/post_info"
+            android:layout_width="@dimen/zero_width"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_4"
+            android:layout_marginBottom="@dimen/margin_size_4"
+            android:textSize="@dimen/text_size_12"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@id/iv_post_rating"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/number_of_post"
+            app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Posted by u/Dmitriy_Stupak 10 hours ago" />
 
         <ImageView
             android:id="@+id/iv_post_rating"
             android:layout_width="@dimen/width_16"
             android:layout_height="@dimen/height_16"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_size_4"
-            android:layout_marginTop="@dimen/margin_size_4"
+            android:layout_marginTop="@dimen/margin_size_8"
+            android:layout_marginEnd="@dimen/margin_size_4"
             android:src="@drawable/ic_like"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_post_image"
-            app:layout_constraintTop_toBottomOf="@+id/tv_post_title" />
+            app:layout_constraintEnd_toStartOf="@id/tv_post_rating" />
 
         <TextView
             android:id="@+id/tv_post_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_size_4"
-            android:layout_marginTop="@dimen/margin_size_4"
+            android:layout_marginTop="@dimen/margin_size_8"
+            android:layout_marginEnd="@dimen/margin_size_8"
             android:gravity="bottom"
             android:textColor="@color/middle_gray"
             android:textSize="@dimen/text_size_14"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_post_rating"
-            app:layout_constraintTop_toBottomOf="@+id/tv_post_title"
+            app:layout_constraintEnd_toStartOf="@id/iv_post_comment"
             tools:text="50000" />
 
         <ImageView
             android:id="@+id/iv_post_comment"
             android:layout_width="@dimen/width_16"
             android:layout_height="@dimen/height_16"
-            android:layout_marginStart="@dimen/margin_size_8"
-            android:layout_marginTop="@dimen/margin_size_4"
+            android:layout_marginTop="@dimen/margin_size_8"
+            android:layout_marginEnd="@dimen/margin_size_4"
             android:src="@drawable/ic_comments"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_post_rating"
-            app:layout_constraintTop_toBottomOf="@id/tv_post_title" />
+            app:layout_constraintEnd_toStartOf="@id/tv_count_of_post_comments" />
 
         <TextView
             android:id="@+id/tv_count_of_post_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_size_4"
-            android:layout_marginTop="@dimen/margin_size_4"
+            android:layout_marginTop="@dimen/margin_size_8"
             android:textColor="@color/middle_gray"
             android:textSize="@dimen/text_size_14"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_post_comment"
-            app:layout_constraintTop_toBottomOf="@id/tv_post_title"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="10000" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

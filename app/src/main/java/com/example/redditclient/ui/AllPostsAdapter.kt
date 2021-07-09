@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.redditclient.R
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 import com.example.redditclient.databinding.RvAllItemBinding
@@ -42,7 +44,8 @@ class AllPostsAdapter(private var listener: OnItemClickListener) : RecyclerView.
             with(itemView) {
                 Glide.with(this)
                     .load(item.thumbnail)
-                    .placeholder(R.drawable.img_placeholder)
+                    .placeholder(R.drawable.img_no_img_available)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(14)))
                     .dontAnimate()
                     .into(itemBinding.ivPostImage)
 

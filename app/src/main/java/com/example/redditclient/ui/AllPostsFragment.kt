@@ -5,12 +5,11 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditclient.Constants.ARG_POSITION
 import com.example.redditclient.R
-import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.databinding.FragmentAllBinding
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -56,6 +55,7 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
 
         viewModel.liveDataRemoteProvider.observe(viewLifecycleOwner, { posts ->
             allPostsAdapter?.addPosts(posts)
+            stopAnimation()
         })
 
         viewModel.loadTopEntries()
@@ -70,10 +70,7 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
         )
 
         binding.srlAllPosts.setOnRefreshListener {
-            viewModel.loadTopEntries()
-            Handler().postDelayed(Runnable {
-                binding.srlAllPosts.isRefreshing = false
-            }, 2000)
+            refreshAllPosts()
         }
     }
 
@@ -89,6 +86,20 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
             bundle.putInt(ARG_POSITION, position)
             allPostsFragment.arguments = bundle
             return allPostsFragment
+        }
+    }
+
+    private fun refreshAllPosts() {
+        viewModel.loadTopEntries()
+        Handler().postDelayed(Runnable {
+            binding.srlAllPosts.isRefreshing = false
+        }, 2000)
+    }
+
+    private fun stopAnimation() {
+        binding.progressBar.apply {
+            isVisible = false
+            cancelAnimation()
         }
     }
 }
