@@ -1,5 +1,7 @@
 package com.example.redditclient.di
 
+import com.example.redditclient.data.local.LocalDataStore
+import com.example.redditclient.data.local.RoomDB
 import com.example.redditclient.data.remote.RemoteDataStore
 import com.example.redditclient.data.remote.RetrofitService
 import com.example.redditclient.domain.Repository
@@ -21,10 +23,23 @@ object DataModule {
 
         bind() from singleton { RemoteDataStore() }
 
+        //Local
+
+        bind() from singleton { RoomDB(instance()) }
+
+        bind() from singleton { instance<RoomDB>().localDao() }
+
+        bind<LocalDataStore>() with singleton {
+            LocalDataStore(
+                localDataDao = instance()
+            )
+        }
+
         //Domain
         bind<Repository>() with singleton {
             Repository(
-                remoteDataStore = instance()
+                remoteDataStore = instance(),
+                localDataStore = instance()
             )
         }
 
