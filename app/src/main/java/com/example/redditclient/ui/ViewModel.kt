@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.redditclient.NetworkManager
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
+import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 import com.example.redditclient.domain.UseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -18,8 +19,8 @@ import io.reactivex.schedulers.Schedulers
 
 class ViewModel(private val useCase: UseCase, application: Application) : ViewModel() {
 
-    private val liveDataRemote = MutableLiveData<List<Children>>()
-    val liveDataRemoteProvider: LiveData<List<Children>> = liveDataRemote
+    private val liveDataRemote = MutableLiveData<List<Data>>()
+    val liveDataRemoteProvider: LiveData<List<Data>> = liveDataRemote
 
     private val compositeDisposable = CompositeDisposable()
     private val context = application.applicationContext

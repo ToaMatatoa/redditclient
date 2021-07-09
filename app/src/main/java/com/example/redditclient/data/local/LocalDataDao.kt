@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.redditclient.data.local.model.LocalData
 import com.example.redditclient.data.local.model.LocalData.Companion.TABLE_NAME
+import io.reactivex.Observable
 
 @Dao
 interface LocalDataDao {
@@ -13,7 +14,7 @@ interface LocalDataDao {
     @Query(
         "SELECT * FROM $TABLE_NAME"
     )
-    fun getLocalPosts(): List<LocalData>
+    fun getLocalPosts(): Observable<List<LocalData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveLocalPosts(localposts: List<LocalData>)

@@ -9,7 +9,7 @@ data class ResponseData(
 ) {
 
     data class MainData(
-        @SerializedName("children") var children: List<Children>
+        @SerializedName("children") var children: Children
     ) {
 
         data class Children(
