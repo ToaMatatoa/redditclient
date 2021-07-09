@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.redditclient.Constants.ARG_POSITION
 import com.example.redditclient.R
 import com.example.redditclient.databinding.FragmentAllBinding
 import org.kodein.di.Kodein
@@ -57,6 +58,10 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
             layoutManager = LinearLayoutManager(context)
             adapter = allPostsAdapter
         }
+
+        binding.srlAllPosts.setColorSchemeResources(
+            R.color.middle_gray
+        )
     }
 
     override fun onDestroyView() {
@@ -65,8 +70,6 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), KodeinAware {
     }
 
     companion object {
-        const val ARG_POSITION = "position"
-
         fun getInstance(position: Int): Fragment {
             val allPostsFragment = AllPostsFragment()
             val bundle = Bundle()

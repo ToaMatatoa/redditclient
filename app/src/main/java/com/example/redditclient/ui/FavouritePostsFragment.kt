@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.redditclient.Constants.ARG_POSITION
 import com.example.redditclient.R
 import com.example.redditclient.databinding.FragmentFavouriteBinding
 import org.kodein.di.Kodein
@@ -47,8 +48,6 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite), KodeinAwar
     }
 
     companion object {
-        const val ARG_POSITION = "position"
-
         fun getInstance(position: Int): Fragment {
             val favouritePostsFragment = FavouritePostsFragment()
             val bundle = Bundle()
