@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.LiveData

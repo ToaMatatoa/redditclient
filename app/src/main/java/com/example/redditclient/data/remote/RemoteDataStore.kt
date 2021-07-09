@@ -2,7 +2,6 @@ package com.example.redditclient.data.remote
 
 import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
-import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 import io.reactivex.Observable
 
 class RemoteDataStore {
