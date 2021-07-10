@@ -1,27 +1,31 @@
 package com.example.redditclient.domain
 
-import com.example.redditclient.data.local.model.LocalData
+import com.example.redditclient.data.local.model.FavoritePost
 import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 import io.reactivex.Observable
 
-class UseCase (private val repository: Repository) {
+class UseCase(private val repository: Repository) {
 
     fun getTopEntries(): Observable<ResponseData> {
         return repository.getTopEntries()
     }
 
-    fun nextPage(name: String): Observable<Children> {
+    fun getNextPosts(name: String): Observable<ResponseData> {
         return repository.nextPage(name)
     }
 
-    fun prevPage(name: String): Observable<Children> {
+    fun getPrevPosts(name: String): Observable<ResponseData> {
         return repository.prevPage(name)
     }
 
-    suspend fun getAllLocalData(): List<LocalData> = repository.getAllLocalData()
+    suspend fun getFavorites(): List<FavoritePost> = repository.getAllLocalData()
 
-    suspend fun saveLocalData(localData: List<LocalData>) {
-        repository.saveLocalData(localData)
+    suspend fun saveLocalData(post: Children.Data) {
+        repository.saveFavoritePost(post)
+    }
+
+    suspend fun deleteFavoritePost(id: Int) {
+        repository.deleteFavoritePost(id)
     }
 }

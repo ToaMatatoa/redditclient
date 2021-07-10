@@ -30,6 +30,8 @@ data class ResponseData(
             ) {
                 var timeAgo = PrettyTime(Locale.ENGLISH).format(Date(timeCreation * 1000))
                 var info: String = "post by $author in $subreddit $timeAgo"
+              //  var id: Int = System.identityHashCode(this)
+                var isFavorite: Boolean = false
             }
         }
     }

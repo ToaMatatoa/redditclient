@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.redditclient.NetworkManager
-import com.example.redditclient.data.local.model.LocalData
+import com.example.redditclient.data.local.model.FavoritePost
 import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
@@ -27,8 +27,8 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
     private val liveDataRemote = MutableLiveData<ArrayList<Data>>()
     val liveDataRemoteProvider: LiveData<ArrayList<Data>> = liveDataRemote
 
-    private val liveDataLocal = MutableLiveData<List<LocalData>>()
-    val liveDataLocalProvider: LiveData<List<LocalData>> = liveDataLocal
+    private val liveDataLocal = MutableLiveData<List<FavoritePost>>()
+    val liveDataLocalProvider: LiveData<List<FavoritePost>> = liveDataLocal
 
     private val compositeDisposable = CompositeDisposable()
     private val context = application.applicationContext
@@ -65,9 +65,65 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
         }
     }
 
+    fun loadNextPosts() {
+
+        if (networkManager.isConnectedToInternet) {
+            compositeDisposable.add(
+                useCase.getNextPosts(lastEntryName)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableObserver<ResponseData>() {
+                        override fun onError(e: Throwable) {
+                            Toast.makeText(
+                                context,
+                                "Check your internet connection and try again",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+
+                        override fun onNext(t: ResponseData) {
+                            liveDataRemote.value = getSingleEntry(t.data.children)
+                        }
+
+                        override fun onComplete() {
+                        }
+                    })
+            )
+        }
+    }
+
+    fun loadPrevPosts() {
+
+        if (networkManager.isConnectedToInternet) {
+            compositeDisposable.add(
+                useCase.getPrevPosts(firstEntryName)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableObserver<ResponseData>() {
+                        override fun onError(e: Throwable) {
+                            Toast.makeText(
+                                context,
+                                "Check your internet connection and try again",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+
+                        override fun onNext(t: ResponseData) {
+                            liveDataRemote.value = getSingleEntry(t.data.children)
+                        }
+
+                        override fun onComplete() {
+                        }
+                    })
+            )
+        }
+    }
+
     private fun getSingleEntry(data: List<Children>): ArrayList<Data> {
         val entries = ArrayList<Data>(data.size)
-        for (i in 0..49) {
+        for (i in 0..24) {
             entries.add(
                 Data(
                     numOfEntry = i + 1,
@@ -79,14 +135,13 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
                     timeCreation = data[i].data.timeCreation,
                     url = data[i].data.url,
                     thumbnail = data[i].data.thumbnail,
-                    name = data[i].data.name,
-
-                    )
+                    name = data[i].data.name
+                )
             )
         }
 
         firstEntryName = entries[0].name
-        lastEntryName = entries[49].name
+        lastEntryName = entries[24].name
 
         return entries
     }
@@ -102,7 +157,19 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
 
     fun getLocalData() {
         viewModelScope.launch {
-            liveDataLocal.postValue(useCase.getAllLocalData())
+            liveDataLocal.postValue(useCase.getFavorites())
+        }
+    }
+
+    fun savePost(post: Data) {
+        viewModelScope.launch {
+            useCase.saveLocalData(post)
+        }
+    }
+
+    fun deletePost(id: Int) {
+        viewModelScope.launch {
+            useCase.deleteFavoritePost(id)
         }
     }
 

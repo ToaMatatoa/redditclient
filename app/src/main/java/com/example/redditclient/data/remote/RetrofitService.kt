@@ -8,12 +8,12 @@ import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @GET("top.json?limit=50")
+    @GET("top.json?limit=25")
     fun getTopEntries(): Observable<ResponseData>
 
-    @GET("top.json?limit=50&")
-    fun nextPage(@Query("after") name: String): Observable<Children>
+    @GET("top.json?limit=25&")
+    fun nextPage(@Query("after") name: String): Observable<ResponseData>
 
-    @GET("top.json?limit=50&")
-    fun prevPage(@Query("before") name: String): Observable<Children>
+    @GET("top.json?limit=25&")
+    fun prevPage(@Query("before") name: String): Observable<ResponseData>
 }

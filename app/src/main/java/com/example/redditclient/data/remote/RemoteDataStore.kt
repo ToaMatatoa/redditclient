@@ -12,11 +12,11 @@ class RemoteDataStore {
         return apiService.getTopEntries()
     }
 
-    fun nextPage(name: String): Observable<Children> {
+    fun nextPage(name: String): Observable<ResponseData> {
         return apiService.nextPage(name)
     }
 
-    fun prevPage(name: String): Observable<Children> {
+    fun prevPage(name: String): Observable<ResponseData> {
         return apiService.prevPage(name)
     }
 }
