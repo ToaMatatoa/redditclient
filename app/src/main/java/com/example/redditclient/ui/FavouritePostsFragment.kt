@@ -55,11 +55,11 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite),
         favoritePostsAdapter = FavoritePostsAdapter(this)
 
         viewModel.liveDataLocalProvider.observe(viewLifecycleOwner, { localPosts ->
-  //          favoritePostsAdapter?.addFavoritePosts(localPosts)
+            //favoritePostsAdapter?.addFavoritePosts(localPosts)
             stopAnimation()
         })
 
-        viewModel.getLocalData()
+        viewModel.loadFavoritePosts()
 
         binding.rvFavoritePostsList.apply {
             layoutManager = LinearLayoutManager(context)
@@ -77,7 +77,7 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite),
     }
 
     private fun refreshAllPosts() {
-        viewModel.loadTopEntries()
+        viewModel.loadAllPosts()
         Handler().postDelayed(Runnable {
             binding.srlFavoritePosts.isRefreshing = false
         }, 2000)

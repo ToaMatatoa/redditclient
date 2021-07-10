@@ -1,22 +1,21 @@
 package com.example.redditclient.data.remote
 
 import com.example.redditclient.data.remote.model.ResponseData
-import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 import io.reactivex.Observable
 
 class RemoteDataStore {
 
     private val apiService by lazy { RetrofitClient.redditPostsService() }
 
-    fun getTopEntries(): Observable<ResponseData> {
-        return apiService.getTopEntries()
+    fun getPosts(): Observable<ResponseData> {
+        return apiService.getPosts()
     }
 
-    fun nextPage(name: String): Observable<ResponseData> {
-        return apiService.nextPage(name)
+    fun getNextPostsPage(name: String): Observable<ResponseData> {
+        return apiService.getNextPostsPage(name)
     }
 
-    fun prevPage(name: String): Observable<ResponseData> {
-        return apiService.prevPage(name)
+    fun getPrevPostsPage(name: String): Observable<ResponseData> {
+        return apiService.getPrevPostsPage(name)
     }
 }

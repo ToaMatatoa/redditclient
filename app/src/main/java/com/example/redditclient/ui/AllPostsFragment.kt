@@ -19,7 +19,8 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.kcontext
 
-class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItemClickListener, AllPostsAdapter.OnFavoriteClickListener, KodeinAware {
+class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItemClickListener,
+    AllPostsAdapter.OnFavoriteClickListener, KodeinAware {
 
     override val kodeinContext = kcontext<Fragment>(this)
     private val parentKodein: Kodein by closestKodein()
@@ -42,7 +43,7 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
 
     override fun onFavoriteClick(post: Data) {
         if (post.isFavorite) viewModel.savePost(post)
-       // else viewModel.deletePost(post.id)
+        // else viewModel.deletePost(post.id)
     }
 
     override fun onCreateView(
@@ -66,7 +67,7 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
             stopAnimation()
         })
 
-        viewModel.loadTopEntries()
+        viewModel.loadAllPosts()
 
         binding.rvAllPostsList.apply {
             layoutManager = LinearLayoutManager(context)
@@ -82,13 +83,13 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
         }
 
         binding.rbPrev.setOnClickListener {
-            viewModel.loadPrevPosts()
+            viewModel.loadPrevPostsPage()
             pageNumber -= 1
             binding.rbPrev.isVisible = pageNumber >= 2
         }
 
         binding.rbNext.setOnClickListener {
-            viewModel.loadNextPosts()
+            viewModel.loadNextPostsPage()
             pageNumber += 1
             binding.rbPrev.isVisible = pageNumber >= 2
         }
@@ -100,7 +101,7 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
     }
 
     private fun refreshAllPosts() {
-        viewModel.loadTopEntries()
+        viewModel.loadAllPosts()
         Handler().postDelayed(Runnable {
             binding.srlAllPosts.isRefreshing = false
         }, 2000)

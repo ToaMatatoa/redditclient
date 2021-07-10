@@ -12,19 +12,19 @@ class Repository(
     private val localDataStore: LocalDataStore
 ) {
 
-    fun getTopEntries(): Observable<ResponseData> {
-        return remoteDataStore.getTopEntries()
+    fun getPosts(): Observable<ResponseData> {
+        return remoteDataStore.getPosts()
     }
 
-    fun nextPage(name: String): Observable<ResponseData> {
-        return remoteDataStore.nextPage(name)
+    fun getNextPostsPage(name: String): Observable<ResponseData> {
+        return remoteDataStore.getNextPostsPage(name)
     }
 
-    fun prevPage(name: String): Observable<ResponseData> {
-        return remoteDataStore.prevPage(name)
+    fun getPrevPostsPage(name: String): Observable<ResponseData> {
+        return remoteDataStore.getPrevPostsPage(name)
     }
 
-    suspend fun getAllLocalData(): List<FavoritePost> = localDataStore.getAllLocalData()
+    suspend fun getAllFavoritePosts(): List<FavoritePost> = localDataStore.getAllFavoritePosts()
 
     suspend fun saveFavoritePost(post: Children.Data) {
         localDataStore.saveFavoritePost(post.toLocalData())

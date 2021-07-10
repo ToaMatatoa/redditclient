@@ -14,5 +14,5 @@ fun Data.toLocalData() = FavoritePost(
     title = title,
     timeAgo = timeAgo,
     info = info,
-   // id = id
+    // id = id
 )

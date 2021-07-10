@@ -34,14 +34,13 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
     private val context = application.applicationContext
     private val networkManager = NetworkManager(context)
 
-    private var firstEntryName: String = ""
-    private var lastEntryName: String = ""
+    private var firstPostName: String = ""
+    private var lastPostName: String = ""
 
-    fun loadTopEntries() {
-
+    fun loadAllPosts() {
         if (networkManager.isConnectedToInternet) {
             compositeDisposable.add(
-                useCase.getTopEntries()
+                useCase.getPosts()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<ResponseData>() {
@@ -54,8 +53,8 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
                                 .show()
                         }
 
-                        override fun onNext(t: ResponseData) {
-                            liveDataRemote.value = getSingleEntry(t.data.children)
+                        override fun onNext(responseData: ResponseData) {
+                            liveDataRemote.value = getSinglePost(responseData.data.children)
                         }
 
                         override fun onComplete() {
@@ -65,11 +64,10 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
         }
     }
 
-    fun loadNextPosts() {
-
+    fun loadNextPostsPage() {
         if (networkManager.isConnectedToInternet) {
             compositeDisposable.add(
-                useCase.getNextPosts(lastEntryName)
+                useCase.getNextPostsPage(lastPostName)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<ResponseData>() {
@@ -82,8 +80,8 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
                                 .show()
                         }
 
-                        override fun onNext(t: ResponseData) {
-                            liveDataRemote.value = getSingleEntry(t.data.children)
+                        override fun onNext(responseData: ResponseData) {
+                            liveDataRemote.value = getSinglePost(responseData.data.children)
                         }
 
                         override fun onComplete() {
@@ -93,11 +91,10 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
         }
     }
 
-    fun loadPrevPosts() {
-
+    fun loadPrevPostsPage() {
         if (networkManager.isConnectedToInternet) {
             compositeDisposable.add(
-                useCase.getPrevPosts(firstEntryName)
+                useCase.getPrevPostsPage(firstPostName)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<ResponseData>() {
@@ -110,8 +107,8 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
                                 .show()
                         }
 
-                        override fun onNext(t: ResponseData) {
-                            liveDataRemote.value = getSingleEntry(t.data.children)
+                        override fun onNext(responseData: ResponseData) {
+                            liveDataRemote.value = getSinglePost(responseData.data.children)
                         }
 
                         override fun onComplete() {
@@ -121,9 +118,9 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
         }
     }
 
-    private fun getSingleEntry(data: List<Children>): ArrayList<Data> {
+    private fun getSinglePost(data: List<Children>): ArrayList<Data> {
         val entries = ArrayList<Data>(data.size)
-        for (i in 0..24) {
+        for (i in 0..49) {
             entries.add(
                 Data(
                     numOfEntry = i + 1,
@@ -140,8 +137,8 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
             )
         }
 
-        firstEntryName = entries[0].name
-        lastEntryName = entries[24].name
+        firstPostName = entries[0].name
+        lastPostName = entries[49].name
 
         return entries
     }
@@ -149,21 +146,21 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
     fun openEntryInChromeTab(index: Int, context: Context) {
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
-        builder.setToolbarColor(Color.parseColor("#004d40"))
-        builder.setSecondaryToolbarColor(Color.parseColor("#ff5252"))
+        builder.setToolbarColor(Color.parseColor("#9e9e9e"))
+        builder.setSecondaryToolbarColor(Color.parseColor("#9e9e9e"))
 
         customTabsIntent.launchUrl(context, Uri.parse(liveDataRemote.value?.get(index)?.url))
     }
 
-    fun getLocalData() {
+    fun loadFavoritePosts() {
         viewModelScope.launch {
-            liveDataLocal.postValue(useCase.getFavorites())
+            liveDataLocal.postValue(useCase.getAllFavoritePosts())
         }
     }
 
     fun savePost(post: Data) {
         viewModelScope.launch {
-            useCase.saveLocalData(post)
+            useCase.saveFavoritePost(post)
         }
     }
 

@@ -7,21 +7,21 @@ import io.reactivex.Observable
 
 class UseCase(private val repository: Repository) {
 
-    fun getTopEntries(): Observable<ResponseData> {
-        return repository.getTopEntries()
+    fun getPosts(): Observable<ResponseData> {
+        return repository.getPosts()
     }
 
-    fun getNextPosts(name: String): Observable<ResponseData> {
-        return repository.nextPage(name)
+    fun getNextPostsPage(name: String): Observable<ResponseData> {
+        return repository.getNextPostsPage(name)
     }
 
-    fun getPrevPosts(name: String): Observable<ResponseData> {
-        return repository.prevPage(name)
+    fun getPrevPostsPage(name: String): Observable<ResponseData> {
+        return repository.getPrevPostsPage(name)
     }
 
-    suspend fun getFavorites(): List<FavoritePost> = repository.getAllLocalData()
+    suspend fun getAllFavoritePosts(): List<FavoritePost> = repository.getAllFavoritePosts()
 
-    suspend fun saveLocalData(post: Children.Data) {
+    suspend fun saveFavoritePost(post: Children.Data) {
         repository.saveFavoritePost(post)
     }
 

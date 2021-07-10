@@ -20,8 +20,8 @@
             android:layout_marginEnd="@dimen/margin_size_16"
             android:background="@drawable/ic_prev"
             android:button="@null"
-            android:visibility="invisible"
             android:elevation="@dimen/margin_size_4"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@id/rb_next"
             app:layout_constraintTop_toTopOf="parent" />
 
