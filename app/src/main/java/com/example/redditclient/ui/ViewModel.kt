@@ -9,7 +9,9 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.redditclient.NetworkManager
+import com.example.redditclient.data.local.model.LocalData
 import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
@@ -18,11 +20,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 class ViewModel(private val useCase: UseCase, application: Application) : ViewModel() {
 
     private val liveDataRemote = MutableLiveData<ArrayList<Data>>()
     val liveDataRemoteProvider: LiveData<ArrayList<Data>> = liveDataRemote
+
+    private val liveDataLocal = MutableLiveData<List<LocalData>>()
+    val liveDataLocalProvider: LiveData<List<LocalData>> = liveDataLocal
 
     private val compositeDisposable = CompositeDisposable()
     private val context = application.applicationContext
@@ -94,6 +100,11 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
         customTabsIntent.launchUrl(context, Uri.parse(liveDataRemote.value?.get(index)?.url))
     }
 
+    fun getLocalData() {
+        viewModelScope.launch {
+            liveDataLocal.postValue(useCase.getAllLocalData())
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()
