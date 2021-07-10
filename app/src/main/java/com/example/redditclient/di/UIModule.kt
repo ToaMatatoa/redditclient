@@ -10,6 +10,16 @@ object UIModule {
 
     val uiModule = Kodein.Module("ui module", false) {
 
-        bind() from provider { ViewModel(instance(), instance()) }
+        bind() from provider {
+            ViewModel(
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance()
+            )
+        }
     }
 }

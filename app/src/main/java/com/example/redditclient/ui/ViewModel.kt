@@ -15,14 +15,23 @@ import com.example.redditclient.data.local.model.FavoritePost
 import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
-import com.example.redditclient.domain.UseCase
+import com.example.redditclient.domain.usecase.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
-class ViewModel(private val useCase: UseCase, application: Application) : ViewModel() {
+class ViewModel(
+    private val getPostsUseCase: GetPostsUseCase,
+    private val deleteFavoritePostUseCase: DeleteFavoritePostUseCase,
+    private val getAllFavoritePostsUseCase: GetAllFavoritePostsUseCase,
+    private val getNextPostsPageUseCase: GetNextPostsPageUseCase,
+    private val getPrevPostsPageUseCase: GetPrevPostsPageUseCase,
+    private val saveFavoritePostUseCase: SaveFavoritePostUseCase,
+    application: Application
+) :
+    ViewModel() {
 
     private val liveDataRemote = MutableLiveData<ArrayList<Data>>()
     val liveDataRemoteProvider: LiveData<ArrayList<Data>> = liveDataRemote
@@ -40,7 +49,7 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
     fun loadAllPosts() {
         if (networkManager.isConnectedToInternet) {
             compositeDisposable.add(
-                useCase.getPosts()
+                getPostsUseCase.getPosts()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<ResponseData>() {
@@ -67,7 +76,7 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
     fun loadNextPostsPage() {
         if (networkManager.isConnectedToInternet) {
             compositeDisposable.add(
-                useCase.getNextPostsPage(lastPostName)
+                getNextPostsPageUseCase.getNextPostsPage(lastPostName)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<ResponseData>() {
@@ -94,7 +103,7 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
     fun loadPrevPostsPage() {
         if (networkManager.isConnectedToInternet) {
             compositeDisposable.add(
-                useCase.getPrevPostsPage(firstPostName)
+                getPrevPostsPageUseCase.getPrevPostsPage(firstPostName)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<ResponseData>() {
@@ -154,19 +163,19 @@ class ViewModel(private val useCase: UseCase, application: Application) : ViewMo
 
     fun loadFavoritePosts() {
         viewModelScope.launch {
-            liveDataLocal.postValue(useCase.getAllFavoritePosts())
+            liveDataLocal.postValue(getAllFavoritePostsUseCase.getAllFavoritePosts())
         }
     }
 
     fun savePost(post: Data) {
         viewModelScope.launch {
-            useCase.saveFavoritePost(post)
+            saveFavoritePostUseCase.saveFavoritePost(post)
         }
     }
 
     fun deletePost(id: Int) {
         viewModelScope.launch {
-            useCase.deleteFavoritePost(id)
+            deleteFavoritePostUseCase.deleteFavoritePost(id)
         }
     }
 

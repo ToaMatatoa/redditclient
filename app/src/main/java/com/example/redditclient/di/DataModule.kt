@@ -7,7 +7,7 @@ import com.example.redditclient.data.local.RoomDB
 import com.example.redditclient.data.remote.RemoteDataStore
 import com.example.redditclient.data.remote.RetrofitService
 import com.example.redditclient.domain.Repository
-import com.example.redditclient.domain.UseCase
+import com.example.redditclient.domain.usecase.*
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -50,9 +50,39 @@ object DataModule {
             )
         }
 
-        //UseCase
-        bind<UseCase>() with singleton {
-            UseCase(
+        //GetPostsUseCase
+        bind<GetPostsUseCase>() with singleton {
+            GetPostsUseCase(
+                repository = instance()
+            )
+        }
+
+        bind<DeleteFavoritePostUseCase>() with singleton {
+            DeleteFavoritePostUseCase(
+                repository = instance()
+            )
+        }
+
+        bind<GetAllFavoritePostsUseCase>() with singleton {
+            GetAllFavoritePostsUseCase(
+                repository = instance()
+            )
+        }
+
+        bind<GetNextPostsPageUseCase>() with singleton {
+            GetNextPostsPageUseCase(
+                repository = instance()
+            )
+        }
+
+        bind<GetPrevPostsPageUseCase>() with singleton {
+            GetPrevPostsPageUseCase(
+                repository = instance()
+            )
+        }
+
+        bind<SaveFavoritePostUseCase>() with singleton {
+            SaveFavoritePostUseCase(
                 repository = instance()
             )
         }
