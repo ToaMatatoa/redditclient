@@ -1,9 +1,9 @@
 package com.example.redditclient.domain
 
-import com.example.redditclient.data.local.model.LocalData
+import com.example.redditclient.data.local.model.FavoritePost
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 
-fun Data.toLocalData() = LocalData(
+fun Data.toLocalData() = FavoritePost(
     subreddit = subreddit,
     author = author,
     numComments = numComments,
@@ -14,5 +14,5 @@ fun Data.toLocalData() = LocalData(
     title = title,
     timeAgo = timeAgo,
     info = info,
-    numOfEntry = numOfEntry
+   // id = id
 )

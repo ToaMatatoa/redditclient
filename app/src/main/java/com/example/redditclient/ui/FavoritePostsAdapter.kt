@@ -7,19 +7,19 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.redditclient.R
-import com.example.redditclient.data.local.model.LocalData
+import com.example.redditclient.data.local.model.FavoritePost
 import com.example.redditclient.databinding.RvAllItemBinding
 
 class FavoritePostsAdapter(private var listener: OnItemClickListener) :
     RecyclerView.Adapter<FavoritePostsAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<LocalData>()
+    private val items = mutableListOf<FavoritePost>()
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
 
-    fun addFavoritePosts(favoritePosts: List<LocalData>) {
+    fun addFavoritePosts(favoritePosts: List<FavoritePost>) {
         items.clear()
         items.addAll(favoritePosts)
         notifyDataSetChanged()
@@ -32,7 +32,7 @@ class FavoritePostsAdapter(private var listener: OnItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val postPosition: LocalData = items[position]
+        val postPosition: FavoritePost = items[position]
         holder.bind(postPosition, listener)
     }
 
@@ -41,7 +41,7 @@ class FavoritePostsAdapter(private var listener: OnItemClickListener) :
     class ViewHolder(private var itemBinding: RvAllItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(item: LocalData, listener: OnItemClickListener?) =
+        fun bind(item: FavoritePost, listener: OnItemClickListener?) =
             with(itemView) {
                 Glide.with(this)
                     .load(item.thumbnail)
@@ -53,7 +53,6 @@ class FavoritePostsAdapter(private var listener: OnItemClickListener) :
                 itemBinding.tvPostTitle.text = item.title
                 itemBinding.tvPostRating.text = item.numLikes.toString()
                 itemBinding.tvCountOfPostComments.text = item.numComments.toString()
-                itemBinding.numberOfPost.text = item.numOfEntry.toString()
                 itemBinding.postInfo.text = item.info
 
                 if (listener != null) {

@@ -1,12 +1,15 @@
 package com.example.redditclient.data.local.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.redditclient.data.local.model.FavoritePost.Companion.COLUMN_ID
 
-@Entity(tableName = LocalData.Companion.TABLE_NAME)
-data class LocalData(
+@Entity(tableName = FavoritePost.Companion.TABLE_NAME)
+data class FavoritePost(
     @PrimaryKey
-    var numOfEntry: Int,
+    @ColumnInfo(name = COLUMN_ID)
+ //   var id: Int,
     var numLikes: Int,
     var author: String?,
     var subreddit: String?,
@@ -20,6 +23,7 @@ data class LocalData(
 ) {
     object Companion {
         const val TABLE_NAME = "postslocaldata"
+        const val COLUMN_ID = "id"
     }
 }
 

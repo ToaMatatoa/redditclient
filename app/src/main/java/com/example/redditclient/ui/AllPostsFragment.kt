@@ -5,13 +5,12 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditclient.Constants.ARG_POSITION
 import com.example.redditclient.R
+import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 import com.example.redditclient.databinding.FragmentAllBinding
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -35,12 +34,15 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
     private val viewModel: ViewModel by instance()
     private var allPostsAdapter: AllPostsAdapter? = null
 
+    var pageNumber = 1
+
     override fun onItemClick(position: Int) {
         context?.let { viewModel.openEntryInChromeTab(position, it) }
     }
 
-    override fun onFavoriteClick(position: Int) {
-        Toast.makeText(context, "Long click", LENGTH_SHORT).show()
+    override fun onFavoriteClick(post: Data) {
+        if (post.isFavorite) viewModel.savePost(post)
+       // else viewModel.deletePost(post.id)
     }
 
     override fun onCreateView(
@@ -77,6 +79,18 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
 
         binding.srlAllPosts.setOnRefreshListener {
             refreshAllPosts()
+        }
+
+        binding.rbPrev.setOnClickListener {
+            viewModel.loadPrevPosts()
+            pageNumber -= 1
+            binding.rbPrev.isVisible = pageNumber >= 2
+        }
+
+        binding.rbNext.setOnClickListener {
+            viewModel.loadNextPosts()
+            pageNumber += 1
+            binding.rbPrev.isVisible = pageNumber >= 2
         }
     }
 

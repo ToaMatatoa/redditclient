@@ -22,7 +22,7 @@ class AllPostsAdapter(
     }
 
     interface OnFavoriteClickListener {
-        fun onFavoriteClick(position: Int)
+        fun onFavoriteClick(post: Data)
     }
 
     fun addPosts(postsItem: List<Data>) {
@@ -71,9 +71,10 @@ class AllPostsAdapter(
                 }
 
                 if (favoriteListener != null) {
-                    itemBinding.ivFavorite.setOnClickListener {
+                    itemBinding.ivFavorite.setOnCheckedChangeListener { _, _ ->
+                        item.isFavorite = !item.isFavorite
                         favoriteListener.onFavoriteClick(
-                            layoutPosition
+                            item
                         )
                     }
                 }
