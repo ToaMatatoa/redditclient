@@ -1,7 +1,9 @@
 package com.example.redditclient.di
 
-import com.example.redditclient.data.local.LocalDataStore
-import com.example.redditclient.data.local.RoomDB
+import androidx.room.Room
+import com.example.redditclient.data.local.model.LocalDataDao
+import com.example.redditclient.data.local.model.LocalDataStore
+import com.example.redditclient.data.local.model.RoomDB
 import com.example.redditclient.data.remote.RemoteDataStore
 import com.example.redditclient.data.remote.RetrofitService
 import com.example.redditclient.domain.Repository
@@ -9,6 +11,7 @@ import com.example.redditclient.domain.UseCase
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
+import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import retrofit2.Retrofit
 
@@ -24,10 +27,14 @@ object DataModule {
         bind() from singleton { RemoteDataStore() }
 
         //Local
+        bind<RoomDB>() with singleton {
+            Room.databaseBuilder(
+                instance(),
+                RoomDB::class.java, "items-name"
+            ).build()
+        }
 
-        bind() from singleton { RoomDB(instance()) }
-
-        bind() from singleton { instance<RoomDB>().localDao() }
+        bind<LocalDataDao>() with provider { instance<RoomDB>().dataDao() }
 
         bind<LocalDataStore>() with singleton {
             LocalDataStore(
