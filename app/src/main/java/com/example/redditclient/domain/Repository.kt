@@ -1,7 +1,7 @@
 package com.example.redditclient.domain
 
 import com.example.redditclient.data.local.model.LocalData
-import com.example.redditclient.data.local.model.LocalDataStore
+import com.example.redditclient.data.local.LocalDataStore
 import com.example.redditclient.data.remote.RemoteDataStore
 import com.example.redditclient.data.remote.model.ResponseData
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children

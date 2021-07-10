@@ -1,13 +1,12 @@
 package com.example.redditclient.data.local
 
 import com.example.redditclient.data.local.model.LocalData
-import io.reactivex.Observable
 
 class LocalDataStore(private val localDataDao: LocalDataDao) {
 
-    fun getAllLocalData(): Observable<List<LocalData>> = localDataDao.getLocalPosts()
+    suspend fun getAllLocalData(): List<LocalData> = localDataDao.getAllLocalData()
 
-    fun saveLocaleData(localData: List<LocalData>) {
-        localDataDao.saveLocalPosts(localData)
+    suspend fun saveLocaleData(localData: List<LocalData>) {
+        localDataDao.saveAllLocalData(localData)
     }
 }

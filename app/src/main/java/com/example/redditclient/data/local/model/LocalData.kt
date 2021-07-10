@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = LocalData.Companion.TABLE_NAME)
 data class LocalData(
     @PrimaryKey
+    var numOfEntry: Int,
     var numLikes: Int,
     var author: String?,
     var subreddit: String?,
