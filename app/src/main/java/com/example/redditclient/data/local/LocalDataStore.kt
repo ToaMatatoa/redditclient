@@ -1,12 +1,16 @@
 package com.example.redditclient.data.local
 
-import com.example.redditclient.data.local.model.LocalData
+import com.example.redditclient.data.local.model.FavoritePost
 
 class LocalDataStore(private val localDataDao: LocalDataDao) {
 
-    suspend fun getAllLocalData(): List<LocalData> = localDataDao.getAllLocalData()
+    suspend fun getAllLocalData(): List<FavoritePost> = localDataDao.getAllFavoritePosts()
 
-    suspend fun saveLocaleData(localData: List<LocalData>) {
-        localDataDao.saveAllLocalData(localData)
+    suspend fun saveFavoritePost(favoritePost: FavoritePost) {
+        localDataDao.saveFavoritePost(favoritePost)
+    }
+
+    suspend fun deleteFavoritePost(id: Int){
+        localDataDao.deleteFavouritePost(id)
     }
 }

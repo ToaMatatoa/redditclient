@@ -55,7 +55,7 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite),
         favoritePostsAdapter = FavoritePostsAdapter(this)
 
         viewModel.liveDataLocalProvider.observe(viewLifecycleOwner, { localPosts ->
-            favoritePostsAdapter?.addFavoritePosts(localPosts)
+  //          favoritePostsAdapter?.addFavoritePosts(localPosts)
             stopAnimation()
         })
 

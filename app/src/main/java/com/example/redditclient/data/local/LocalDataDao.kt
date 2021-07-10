@@ -1,20 +1,21 @@
 package com.example.redditclient.data.local
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.example.redditclient.data.local.model.LocalData
-import com.example.redditclient.data.local.model.LocalData.Companion.TABLE_NAME
+import androidx.room.*
+import com.example.redditclient.data.local.model.FavoritePost
+import com.example.redditclient.data.local.model.FavoritePost.Companion.COLUMN_ID
+import com.example.redditclient.data.local.model.FavoritePost.Companion.TABLE_NAME
 
 @Dao
-interface   LocalDataDao {
+interface LocalDataDao {
 
     @Query(
         "SELECT * FROM $TABLE_NAME"
     )
-    suspend fun getAllLocalData(): List<LocalData>
+    suspend fun getAllFavoritePosts(): List<FavoritePost>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveAllLocalData(localdata: List<LocalData>)
+    suspend fun saveFavoritePost(favoritePost: FavoritePost)
+
+    @Query("DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = :id")
+    suspend fun deleteFavouritePost(id: Int)
 }
