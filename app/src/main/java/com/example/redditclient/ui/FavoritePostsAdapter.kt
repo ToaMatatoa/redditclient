@@ -7,27 +7,21 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.redditclient.R
-import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
+import com.example.redditclient.data.local.model.LocalData
 import com.example.redditclient.databinding.RvAllItemBinding
 
-class AllPostsAdapter(
-    private var listener: OnItemClickListener,
-    private var favoriteListener: OnFavoriteClickListener
-) : RecyclerView.Adapter<AllPostsAdapter.ViewHolder>() {
+class FavoritePostsAdapter(private var listener: OnItemClickListener) :
+    RecyclerView.Adapter<FavoritePostsAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<Data>()
+    private val items = mutableListOf<LocalData>()
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)
     }
 
-    interface OnFavoriteClickListener {
-        fun onFavoriteClick(position: Int)
-    }
-
-    fun addPosts(postsItem: List<Data>) {
+    fun addFavoritePosts(favoritePosts: List<LocalData>) {
         items.clear()
-        items.addAll(postsItem)
+        items.addAll(favoritePosts)
         notifyDataSetChanged()
     }
 
@@ -38,8 +32,8 @@ class AllPostsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val postPosition: Data = items[position]
-        holder.bind(postPosition, listener, favoriteListener)
+        val postPosition: LocalData = items[position]
+        holder.bind(postPosition, listener)
     }
 
     override fun getItemCount(): Int = items.size
@@ -47,11 +41,7 @@ class AllPostsAdapter(
     class ViewHolder(private var itemBinding: RvAllItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(
-            item: Data,
-            listener: OnItemClickListener?,
-            favoriteListener: OnFavoriteClickListener?
-        ) =
+        fun bind(item: LocalData, listener: OnItemClickListener?) =
             with(itemView) {
                 Glide.with(this)
                     .load(item.thumbnail)
@@ -68,14 +58,6 @@ class AllPostsAdapter(
 
                 if (listener != null) {
                     itemBinding.root.setOnClickListener { listener.onItemClick(layoutPosition) }
-                }
-
-                if (favoriteListener != null) {
-                    itemBinding.ivFavorite.setOnClickListener {
-                        favoriteListener.onFavoriteClick(
-                            layoutPosition
-                        )
-                    }
                 }
             }
     }

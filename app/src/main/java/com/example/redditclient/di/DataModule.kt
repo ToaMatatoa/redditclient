@@ -1,9 +1,9 @@
 package com.example.redditclient.di
 
 import androidx.room.Room
-import com.example.redditclient.data.local.model.LocalDataDao
-import com.example.redditclient.data.local.model.LocalDataStore
-import com.example.redditclient.data.local.model.RoomDB
+import com.example.redditclient.data.local.LocalDataDao
+import com.example.redditclient.data.local.LocalDataStore
+import com.example.redditclient.data.local.RoomDB
 import com.example.redditclient.data.remote.RemoteDataStore
 import com.example.redditclient.data.remote.RetrofitService
 import com.example.redditclient.domain.Repository

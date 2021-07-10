@@ -5,7 +5,7 @@ import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 
 fun Data.toLocalData() = LocalData(
     subreddit = subreddit,
-    author = author.orEmpty(),
+    author = author,
     numComments = numComments,
     thumbnail = thumbnail,
     url = url,
@@ -13,5 +13,6 @@ fun Data.toLocalData() = LocalData(
     name = name,
     title = title,
     timeAgo = timeAgo,
-    info = info
+    info = info,
+    numOfEntry = numOfEntry
 )

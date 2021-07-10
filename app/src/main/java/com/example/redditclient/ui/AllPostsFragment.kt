@@ -5,6 +5,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +20,7 @@ import org.kodein.di.android.x.closestKodein
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.kcontext
 
-class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItemClickListener,KodeinAware {
+class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItemClickListener, AllPostsAdapter.OnFavoriteClickListener, KodeinAware {
 
     override val kodeinContext = kcontext<Fragment>(this)
     private val parentKodein: Kodein by closestKodein()
@@ -37,6 +39,10 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
         context?.let { viewModel.openEntryInChromeTab(position, it) }
     }
 
+    override fun onFavoriteClick(position: Int) {
+        Toast.makeText(context, "Long click", LENGTH_SHORT).show()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,7 +57,7 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        allPostsAdapter = AllPostsAdapter(this)
+        allPostsAdapter = AllPostsAdapter(this, this)
 
         viewModel.liveDataRemoteProvider.observe(viewLifecycleOwner, { posts ->
             allPostsAdapter?.addPosts(posts)
@@ -79,16 +85,6 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
         _binding = null
     }
 
-    companion object {
-        fun getInstance(position: Int): Fragment {
-            val allPostsFragment = AllPostsFragment()
-            val bundle = Bundle()
-            bundle.putInt(ARG_POSITION, position)
-            allPostsFragment.arguments = bundle
-            return allPostsFragment
-        }
-    }
-
     private fun refreshAllPosts() {
         viewModel.loadTopEntries()
         Handler().postDelayed(Runnable {
@@ -97,9 +93,19 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
     }
 
     private fun stopAnimation() {
-        binding.progressBar.apply {
+        binding.progressBarAllPosts.apply {
             isVisible = false
             cancelAnimation()
+        }
+    }
+
+    companion object {
+        fun getInstance(position: Int): Fragment {
+            val allPostsFragment = AllPostsFragment()
+            val bundle = Bundle()
+            bundle.putInt(ARG_POSITION, position)
+            allPostsFragment.arguments = bundle
+            return allPostsFragment
         }
     }
 }
