@@ -42,8 +42,8 @@ class AllPostsFragment : Fragment(R.layout.fragment_all), AllPostsAdapter.OnItem
     }
 
     override fun onFavoriteClick(post: Data) {
-        if (post.isFavorite) viewModel.savePost(post)
-        else viewModel.deletePost(post.id)
+        if (post.isFavorite) viewModel.deletePost(post.id)
+        else viewModel.savePost(post)
     }
 
     override fun onCreateView(
