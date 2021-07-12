@@ -9,7 +9,7 @@ import com.example.redditclient.data.local.model.FavoritePost.Companion.COLUMN_I
 data class FavoritePost(
     @PrimaryKey
     @ColumnInfo(name = COLUMN_ID)
-    //   var id: Int,
+    var id: String,
     var numLikes: Int,
     var author: String?,
     var subreddit: String?,

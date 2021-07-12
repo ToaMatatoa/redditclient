@@ -12,15 +12,15 @@ class Repository(
     private val localDataStore: LocalDataStore
 ) {
 
-    fun getPosts(): Observable<ResponseData> {
+    fun getPosts(): Observable<List<Children.Data>> {
         return remoteDataStore.getPosts()
     }
 
-    fun getNextPostsPage(name: String): Observable<ResponseData> {
+    fun getNextPostsPage(name: String): Observable<List<Children.Data>> {
         return remoteDataStore.getNextPostsPage(name)
     }
 
-    fun getPrevPostsPage(name: String): Observable<ResponseData> {
+    fun getPrevPostsPage(name: String): Observable<List<Children.Data>> {
         return remoteDataStore.getPrevPostsPage(name)
     }
 
@@ -30,7 +30,7 @@ class Repository(
         localDataStore.saveFavoritePost(post.toLocalData())
     }
 
-    suspend fun deleteFavoritePost(id: Int) {
+    suspend fun deleteFavoritePost(id: String) {
         localDataStore.deleteFavoritePost(id)
     }
 }

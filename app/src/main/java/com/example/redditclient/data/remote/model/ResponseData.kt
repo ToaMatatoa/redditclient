@@ -26,12 +26,12 @@ data class ResponseData(
                 @SerializedName("score") var numLikes: Int,
                 @SerializedName("name") var name: String,
                 @SerializedName("title") var title: String,
-                @SerializedName("created_utc") var timeCreation: Long
+                @SerializedName("created_utc") var timeCreation: Long,
+                @SerializedName("id") var id: String
             ) {
                 var timeAgo = PrettyTime(Locale.ENGLISH).format(Date(timeCreation * 1000))
                 var info: String = "post by $author in $subreddit $timeAgo"
                 var isFavorite: Boolean = false
-                //  var id: Int = System.identityHashCode(this)
             }
         }
     }

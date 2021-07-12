@@ -17,5 +17,5 @@ interface LocalDataDao {
     suspend fun saveFavoritePost(favoritePost: FavoritePost)
 
     @Query("DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = :id")
-    suspend fun deleteFavouritePost(id: Int)
+    suspend fun deleteFavouritePost(id: String)
 }

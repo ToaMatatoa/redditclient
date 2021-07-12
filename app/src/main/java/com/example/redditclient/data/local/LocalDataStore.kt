@@ -10,7 +10,7 @@ class LocalDataStore(private val localDataDao: LocalDataDao) {
         localDataDao.saveFavoritePost(favoritePost)
     }
 
-    suspend fun deleteFavoritePost(id: Int) {
+    suspend fun deleteFavoritePost(id: String) {
         localDataDao.deleteFavouritePost(id)
     }
 }

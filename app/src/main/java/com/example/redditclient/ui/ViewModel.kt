@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.redditclient.NetworkManager
 import com.example.redditclient.data.local.model.FavoritePost
-import com.example.redditclient.data.remote.model.ResponseData
-import com.example.redditclient.data.remote.model.ResponseData.MainData.Children
 import com.example.redditclient.data.remote.model.ResponseData.MainData.Children.Data
 import com.example.redditclient.domain.usecase.*
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -52,7 +50,7 @@ class ViewModel(
                 getPostsUseCase.getPosts()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object : DisposableObserver<ResponseData>() {
+                    .subscribeWith(object : DisposableObserver<List<Data>>() {
                         override fun onError(e: Throwable) {
                             Toast.makeText(
                                 context,
@@ -62,8 +60,8 @@ class ViewModel(
                                 .show()
                         }
 
-                        override fun onNext(responseData: ResponseData) {
-                            liveDataRemote.value = getSinglePost(responseData.data.children)
+                        override fun onNext(listPosts: List<Data>) {
+                            liveDataRemote.value = getSinglePost(listPosts)
                         }
 
                         override fun onComplete() {
@@ -79,7 +77,7 @@ class ViewModel(
                 getNextPostsPageUseCase.getNextPostsPage(lastPostName)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object : DisposableObserver<ResponseData>() {
+                    .subscribeWith(object : DisposableObserver<List<Data>>() {
                         override fun onError(e: Throwable) {
                             Toast.makeText(
                                 context,
@@ -89,8 +87,8 @@ class ViewModel(
                                 .show()
                         }
 
-                        override fun onNext(responseData: ResponseData) {
-                            liveDataRemote.value = getSinglePost(responseData.data.children)
+                        override fun onNext(listPosts: List<Data>) {
+                            liveDataRemote.value = getSinglePost(listPosts)
                         }
 
                         override fun onComplete() {
@@ -106,7 +104,7 @@ class ViewModel(
                 getPrevPostsPageUseCase.getPrevPostsPage(firstPostName)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeWith(object : DisposableObserver<ResponseData>() {
+                    .subscribeWith(object : DisposableObserver<List<Data>>() {
                         override fun onError(e: Throwable) {
                             Toast.makeText(
                                 context,
@@ -116,8 +114,8 @@ class ViewModel(
                                 .show()
                         }
 
-                        override fun onNext(responseData: ResponseData) {
-                            liveDataRemote.value = getSinglePost(responseData.data.children)
+                        override fun onNext(listPosts: List<Data>) {
+                            liveDataRemote.value = getSinglePost(listPosts)
                         }
 
                         override fun onComplete() {
@@ -127,21 +125,22 @@ class ViewModel(
         }
     }
 
-    private fun getSinglePost(data: List<Children>): ArrayList<Data> {
+    private fun getSinglePost(data: List<Data>): ArrayList<Data> {
         val entries = ArrayList<Data>(data.size)
         for (i in 0..49) {
             entries.add(
                 Data(
                     numOfEntry = i + 1,
-                    title = data[i].data.title,
-                    author = data[i].data.author,
-                    numLikes = data[i].data.numLikes,
-                    subreddit = data[i].data.subreddit,
-                    numComments = data[i].data.numComments,
-                    timeCreation = data[i].data.timeCreation,
-                    url = data[i].data.url,
-                    thumbnail = data[i].data.thumbnail,
-                    name = data[i].data.name
+                    title = data[i].title,
+                    author = data[i].author,
+                    numLikes = data[i].numLikes,
+                    subreddit = data[i].subreddit,
+                    numComments = data[i].numComments,
+                    timeCreation = data[i].timeCreation,
+                    url = data[i].url,
+                    thumbnail = data[i].thumbnail,
+                    name = data[i].name,
+                    id = data[i].id
                 )
             )
         }
@@ -173,7 +172,7 @@ class ViewModel(
         }
     }
 
-    fun deletePost(id: Int) {
+    fun deletePost(id: String) {
         viewModelScope.launch {
             deleteFavoritePostUseCase.deleteFavoritePost(id)
         }
