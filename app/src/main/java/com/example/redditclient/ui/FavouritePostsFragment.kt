@@ -1,7 +1,6 @@
 package com.example.redditclient.ui
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,7 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite),
     private var favoritePostsAdapter: FavoritePostsAdapter? = null
 
     override fun onItemClick(position: Int) {
-        context?.let { viewModel.openEntryInChromeTab(position, it) }
+        context?.let { viewModel.openEntryInChromeTabFromFavorite(position, it) }
     }
 
     override fun onCreateView(

@@ -160,6 +160,15 @@ class ViewModel(
         customTabsIntent.launchUrl(context, Uri.parse(liveDataRemote.value?.get(index)?.url))
     }
 
+    fun openEntryInChromeTabFromFavorite(index: Int, context: Context) {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        builder.setToolbarColor(Color.parseColor("#9e9e9e"))
+        builder.setSecondaryToolbarColor(Color.parseColor("#9e9e9e"))
+
+        customTabsIntent.launchUrl(context, Uri.parse(liveDataLocal.value?.get(index)?.url))
+    }
+
     fun loadFavoritePosts() {
         viewModelScope.launch {
             liveDataLocal.postValue(getAllFavoritePostsUseCase.getAllFavoritePosts())
