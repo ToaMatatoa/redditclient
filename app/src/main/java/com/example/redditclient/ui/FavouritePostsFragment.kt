@@ -1,6 +1,7 @@
 package com.example.redditclient.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +65,10 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite),
             layoutManager = LinearLayoutManager(context)
             adapter = favoritePostsAdapter
         }
+
+        binding.srlFavoritePosts.setOnRefreshListener {
+            refreshAllPosts()
+        }
     }
 
     override fun onDestroyView() {
@@ -76,6 +81,13 @@ class FavouritePostsFragment : Fragment(R.layout.fragment_favourite),
             isVisible = false
             cancelAnimation()
         }
+    }
+
+    private fun refreshAllPosts() {
+        viewModel.loadFavoritePosts()
+        Handler().postDelayed(Runnable {
+            binding.srlFavoritePosts.isRefreshing = false
+        }, 2000)
     }
 
     companion object {
